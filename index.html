@@ -1,0 +1,901 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Yoyo — Interaction Design</title>
+
+    <style>
+        /* =========================
+           RESET
+        ========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Inter",
+                "Helvetica Neue",
+                Arial,
+                sans-serif;
+
+            background: #f5f5f2;
+            color: #171717;
+
+            line-height: 1.6;
+            transition:
+                background 0.4s ease,
+                color 0.4s ease;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+
+        /* =========================
+           DARK MODE
+        ========================== */
+
+        body.dark {
+            background: #111111;
+            color: #f3f3ef;
+        }
+
+        body.dark .nav {
+            background: rgba(17, 17, 17, 0.8);
+        }
+
+        body.dark .project-card,
+        body.dark .interest-card {
+            border-color: #333333;
+            background: #181818;
+        }
+
+        body.dark .project-number {
+            color: #777;
+        }
+
+        body.dark .contact-box {
+            background: #f3f3ef;
+            color: #111;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================== */
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            z-index: 100;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 22px 5vw;
+
+            background: rgba(245, 245, 242, 0.8);
+            backdrop-filter: blur(14px);
+
+            transition: background 0.4s ease;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            opacity: 0.6;
+            transition: opacity 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .theme-toggle {
+            width: 42px;
+            height: 24px;
+
+            border: 1px solid currentColor;
+            border-radius: 30px;
+
+            background: transparent;
+            cursor: pointer;
+
+            position: relative;
+        }
+
+        .theme-toggle::after {
+            content: "";
+
+            position: absolute;
+            top: 3px;
+            left: 3px;
+
+            width: 16px;
+            height: 16px;
+
+            border-radius: 50%;
+            background: currentColor;
+
+            transition: transform 0.3s ease;
+        }
+
+        body.dark .theme-toggle::after {
+            transform: translateX(18px);
+        }
+
+
+        /* =========================
+           GENERAL
+        ========================== */
+
+        section {
+            width: 90%;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .section {
+            padding: 130px 0;
+        }
+
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+
+            opacity: 0.5;
+
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: clamp(42px, 7vw, 90px);
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            padding-top: 100px;
+        }
+
+        .hero-small {
+            font-size: 14px;
+            margin-bottom: 28px;
+            opacity: 0.55;
+        }
+
+        .hero h1 {
+            font-size: clamp(80px, 18vw, 240px);
+            line-height: 0.78;
+
+            letter-spacing: -0.09em;
+            font-weight: 700;
+        }
+
+        .hero-tagline {
+            max-width: 620px;
+
+            margin-top: 55px;
+
+            font-size: clamp(22px, 3vw, 38px);
+            line-height: 1.15;
+
+            letter-spacing: -0.035em;
+        }
+
+        .scroll-hint {
+            margin-top: 90px;
+
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+
+            opacity: 0.45;
+        }
+
+
+        /* =========================
+           ABOUT
+        ========================== */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 0.7fr 1.3fr;
+
+            gap: 80px;
+        }
+
+        .about-text {
+            font-size: clamp(25px, 3vw, 42px);
+            line-height: 1.2;
+            letter-spacing: -0.035em;
+            max-width: 850px;
+        }
+
+
+        /* =========================
+           INTERESTS / SKILLS
+        ========================== */
+
+        .interests-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            border-top: 1px solid currentColor;
+        }
+
+        .interest-card {
+            min-height: 220px;
+
+            padding: 28px;
+
+            border-right: 1px solid #d0d0cc;
+            border-bottom: 1px solid #d0d0cc;
+
+            background: #f5f5f2;
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease;
+        }
+
+        .interest-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .interest-number {
+            font-size: 12px;
+            opacity: 0.45;
+        }
+
+        .interest-card h3 {
+            margin-top: 70px;
+
+            font-size: 22px;
+            letter-spacing: -0.03em;
+            font-weight: 500;
+        }
+
+
+        /* =========================
+           PROJECTS
+        ========================== */
+
+        .projects {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .project-card {
+            display: grid;
+
+            grid-template-columns:
+                90px 1fr 250px;
+
+            align-items: center;
+
+            min-height: 180px;
+
+            padding: 30px;
+
+            border: 1px solid #d0d0cc;
+            background: #f5f5f2;
+
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease;
+        }
+
+        .project-card:hover {
+            transform: translateX(10px);
+        }
+
+        .project-number {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .project-card h3 {
+            font-size: clamp(25px, 4vw, 48px);
+            letter-spacing: -0.05em;
+            font-weight: 500;
+        }
+
+        .project-description {
+            font-size: 13px;
+            opacity: 0.55;
+        }
+
+
+        /* =========================
+           CONTACT
+        ========================== */
+
+        .contact-section {
+            padding-bottom: 80px;
+        }
+
+        .contact-box {
+            margin-top: 70px;
+
+            padding: 70px;
+
+            background: #171717;
+            color: #f5f5f2;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 40px;
+        }
+
+        .contact-box h3 {
+            font-size: clamp(35px, 6vw, 80px);
+            letter-spacing: -0.06em;
+            line-height: 0.95;
+        }
+
+        .email {
+            font-size: 18px;
+
+            padding-bottom: 5px;
+
+            border-bottom: 1px solid currentColor;
+
+            transition: opacity 0.2s ease;
+        }
+
+        .email:hover {
+            opacity: 0.6;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            width: 90%;
+            max-width: 1300px;
+
+            margin: auto;
+
+            padding: 30px 0 45px;
+
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 12px;
+            opacity: 0.45;
+        }
+
+
+        /* =========================
+           SCROLL ANIMATION
+        ========================== */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+
+            transition:
+                opacity 0.8s ease,
+                transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 800px) {
+
+            .nav {
+                padding: 18px 5vw;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section {
+                padding: 90px 0;
+            }
+
+            .hero {
+                min-height: 90vh;
+            }
+
+            .hero h1 {
+                font-size: 25vw;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .interests-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .interest-card {
+                min-height: 160px;
+            }
+
+            .interest-card h3 {
+                margin-top: 45px;
+            }
+
+            .project-card {
+                grid-template-columns: 50px 1fr;
+                gap: 15px;
+            }
+
+            .project-description {
+                grid-column: 2;
+            }
+
+            .contact-box {
+                flex-direction: column;
+                align-items: flex-start;
+
+                padding: 45px 30px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav class="nav">
+
+        <a href="#home" class="logo">
+            Yoyo
+        </a>
+
+        <div class="nav-right">
+
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Toggle dark mode">
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main id="home">
+
+        <section class="hero">
+
+            <div class="hero-small reveal">
+                High School Student · Interaction Design
+            </div>
+
+            <h1 class="reveal">
+                Yoyo
+            </h1>
+
+            <p class="hero-tagline reveal">
+                Exploring how people interact with
+                digital products, spaces and interfaces.
+            </p>
+
+            <div class="scroll-hint reveal">
+                ↓ Scroll to explore
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ABOUT ME
+        ========================== -->
+
+        <section
+            class="section"
+            id="about">
+
+            <div class="about-grid">
+
+                <div class="section-label reveal">
+                    01 / About Me
+                </div>
+
+                <p class="about-text reveal">
+                    I am a high school student passionate about
+                    interaction design. I love exploring how
+                    people interact with digital products,
+                    spaces and interfaces.
+
+                    <br><br>
+
+                    My work combines hand-drawn art,
+                    visual design and AI-assisted creation
+                    to build user-centered experiences.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SKILLS / INTERESTS
+        ========================== -->
+
+        <section
+            class="section"
+            id="skills">
+
+            <div class="section-label reveal">
+                02 / Interests & Skills
+            </div>
+
+            <div class="interests-grid">
+
+                <div class="interest-card reveal">
+                    <span class="interest-number">
+                        01
+                    </span>
+
+                    <h3>
+                        User Experience
+                    </h3>
+                </div>
+
+
+                <div class="interest-card reveal">
+                    <span class="interest-number">
+                        02
+                    </span>
+
+                    <h3>
+                        UI Design
+                    </h3>
+                </div>
+
+
+                <div class="interest-card reveal">
+                    <span class="interest-number">
+                        03
+                    </span>
+
+                    <h3>
+                        Human-Computer Interaction
+                    </h3>
+                </div>
+
+
+                <div class="interest-card reveal">
+                    <span class="interest-number">
+                        04
+                    </span>
+
+                    <h3>
+                        Visual Art
+                    </h3>
+                </div>
+
+
+                <div class="interest-card reveal">
+                    <span class="interest-number">
+                        05
+                    </span>
+
+                    <h3>
+                        Interactive Installation
+                    </h3>
+                </div>
+
+
+                <div class="interest-card reveal">
+                    <span class="interest-number">
+                        06
+                    </span>
+
+                    <h3>
+                        Information Visualization
+                    </h3>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROJECTS
+        ========================== -->
+
+        <section
+            class="section"
+            id="projects">
+
+            <div class="section-label reveal">
+                03 / Selected Projects
+            </div>
+
+            <div class="projects">
+
+                <article class="project-card reveal">
+
+                    <span class="project-number">
+                        01
+                    </span>
+
+                    <h3>
+                        Interactive Experience
+                    </h3>
+
+                    <p class="project-description">
+                        Interaction · UX · Installation
+                    </p>
+
+                </article>
+
+
+                <article class="project-card reveal">
+
+                    <span class="project-number">
+                        02
+                    </span>
+
+                    <h3>
+                        Visual Interface
+                    </h3>
+
+                    <p class="project-description">
+                        UI Design · Visual Design
+                    </p>
+
+                </article>
+
+
+                <article class="project-card reveal">
+
+                    <span class="project-number">
+                        03
+                    </span>
+
+                    <h3>
+                        Information Visualization
+                    </h3>
+
+                    <p class="project-description">
+                        Data · Interaction · Visual Art
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONTACT
+        ========================== -->
+
+        <section
+            class="section contact-section"
+            id="contact">
+
+            <div class="section-label reveal">
+                04 / Contact
+            </div>
+
+            <div class="contact-box reveal">
+
+                <h3>
+                    Let's create<br>
+                    something.
+                </h3>
+
+                <a
+                    class="email"
+                    href="mailto:congsx08@example.com">
+
+                    congsx08@example.com
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <span>
+            © 2026 Yoyo
+        </span>
+
+        <span>
+            Interaction Design Portfolio
+        </span>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        /* -------------------------
+           DARK / LIGHT MODE
+        -------------------------- */
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        themeToggle.addEventListener("click", () => {
+
+            document.body.classList.toggle("dark");
+
+            const isDark =
+                document.body.classList.contains("dark");
+
+            localStorage.setItem(
+                "theme",
+                isDark ? "dark" : "light"
+            );
+
+        });
+
+
+        /* -------------------------
+           REMEMBER THEME
+        -------------------------- */
+
+        const savedTheme =
+            localStorage.getItem("theme");
+
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark");
+        }
+
+
+        /* -------------------------
+           SCROLL REVEAL
+        -------------------------- */
+
+        const revealElements =
+            document.querySelectorAll(".reveal");
+
+        const observer =
+            new IntersectionObserver(
+
+                (entries) => {
+
+                    entries.forEach((entry) => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add(
+                                "visible"
+                            );
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    });
+
+                },
+
+                {
+                    threshold: 0.12
+                }
+
+            );
+
+
+        revealElements.forEach((element) => {
+
+            observer.observe(element);
+
+        });
+
+    </script>
+
+</body>
+</html>
+```
