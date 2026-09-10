@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoyo | Kpop Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 45%, #000000 100%);
+            color: #ffffff;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 70px 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
+        .black-pink-shadow {
+            color: #000000;
+            text-shadow:
+                0 0 8px #ff66b2,
+                0 0 16px #ff66b2,
+                0 0 24px #ff3399;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            color: #ff99cc;
+            font-size: 21px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff66b2, #ff3399);
+            margin-bottom: 50px;
+            border-radius: 2px;
+        }
+
+        section {
+            margin-bottom: 45px;
+            padding: 24px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 102, 178, 0.15);
+            box-shadow: 0 0 25px rgba(255, 102, 178, 0.08);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #ff66b2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h2::before {
+            content: "✦";
+            color: #ff66b2;
+            font-size: 18px;
+        }
+
+        p {
+            font-size: 16px;
+            font-weight: 300;
+            color: #e0e0e0;
+        }
+
+        a {
+            color: #ff66b2;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        a:hover {
+            text-shadow: 0 0 8px #ff66b2;
+            text-decoration: underline;
+        }
+
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: #ff66b2;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff66b2;
+            animation: float 6s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left: 35%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 0.8s;"></div>
+    <div class="particle" style="left: 65%; animation-delay: 2.2s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 1s;"></div>
+
+    <div class="container">
+        <h1>Hi! I'm <span class="black-pink-shadow">Yoyo</span></h1>
+        <p class="subtitle">Aspiring Interaction Designer</p>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2>About Me</h2>
+            <p>I am a high school student passionate about interaction design. I love exploring how people interact with digital products, spaces and interfaces. My work combines hand-drawn art, visual design and AI-assisted creation to build user-centered experiences.</p>
+        </section>
+
+        <section>
+            <h2>Interests</h2>
+            <p>User Experience, UI Design, Human-Computer Interaction, Visual Art, Interactive Installation, Information Visualization.</p>
+        </section>
+
+        <section>
+            <h2>Contact</h2>
+            <p>Email: congsax08@example.com</p>
+        </section>
+    </div>
+</body>
+</html>
